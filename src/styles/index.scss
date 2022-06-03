@@ -1,0 +1,560 @@
+@use "sass:math";
+@use "sass:map";
+@import url("https://fonts.googleapis.com/css2?family=KoHo:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&display=swap");
+
+$koho: "KoHo", sans-serif;
+
+$lg: 5rem;
+$md: 2.5rem;
+$sm: 1.5rem;
+$xsm: 1rem;
+$xxsm: 0.75rem;
+
+$headers: (
+  h1: $lg,
+  h2: $md,
+  h3: $sm,
+  h4: $xsm,
+  p: $xxsm,
+);
+
+$weights: 200, 400, 700;
+
+$g-xlg: 2rem;
+$g-lg: 1rem;
+$g-md: 0.75rem;
+$g-sm: 0.5rem;
+$g-xsm: 0.3rem;
+
+$border-radius: 10px;
+$border-width: 2px;
+
+$trans: all 0.1s ease-in-out;
+
+$muted: #00000044;
+$blue: #a7ffff;
+$yellow: #ffffa7;
+$pink: #ffa7d4;
+
+$bp: 750px;
+
+// THEMES
+
+$default: (
+  "black": black,
+  "white": white,
+  "light": white,
+  "dark": black,
+  "muted": rgba(0, 0, 0, 0.3),
+);
+
+$earth: (
+  "black": #1c1a1d,
+  "white": #dbd7b9,
+  "light": #847b66,
+  "dark": #580021,
+  "muted": #5e5640,
+);
+
+$grey: (
+  "black": #5e5640,
+  "white": #f9edf3,
+  "light": #abe255,
+  "dark": #f28893,
+  "muted": #4597f4,
+);
+
+$reds: (
+  "black": #cb0008,
+  "white": #171126,
+  "light": #ef7d0f,
+  "dark": #12625d,
+  "muted": #ef320d55,
+);
+
+$browns: (
+  "black": #2a1a22,
+  "white": #8ba2ee,
+  "light": #967d68,
+  "dark": #34121e,
+  "muted": #412f2b,
+);
+
+$pop: (
+  "black": #262539,
+  "white": #d3eee3,
+  "light": #eff288,
+  "dark": #e9033d,
+  "muted": #68b8cc,
+);
+
+$bumble: (
+  "black": #2a243d,
+  "white": #f1f052,
+  "light": #c4846c,
+  "dark": black,
+  "muted": #2a243d44,
+);
+
+$gelato: (
+  "black": #e9e854,
+  "white": #f103e1,
+  "light": #c75293,
+  "dark": #ddb73f,
+  "muted": #e9e85488,
+);
+
+$grenouie: (
+  "black": #b6bcb9,
+  "white": #472356,
+  "light": #258852,
+  "dark": #615b4c,
+  "muted": #25673c,
+);
+
+$poland: (
+  "black": #b2dba9,
+  "white": #129442,
+  "light": #101f21,
+  "dark": #364e35,
+  "muted": #212d23,
+);
+
+$themes: (
+  "default": $default,
+  "pop": $pop,
+  "earth": $earth,
+  "grey": $grey,
+  "browns": $browns,
+  "reds": $reds,
+  "bumble": $bumble,
+  "gelato": $gelato,
+  "grenouie": $grenouie,
+  "poland": $poland,
+);
+
+@mixin theme($name, $map) {
+  .#{$name} {
+    .home {
+      background-color: map.get($map, "white");
+    }
+
+    .info {
+      background-color: map.get($map, "black");
+
+      * {
+        color: map.get($map, "white");
+      }
+    }
+
+    @each $h, $v in $headers {
+      #{$h} {
+        color: map.get($map, "black");
+      }
+    }
+
+    a {
+      color: map.get($map, "black");
+
+      &:hover {
+        color: map.get($map, "muted");
+      }
+
+      &.muted {
+        color: map.get($map, "muted");
+        &:hover {
+          color: map.get($map, "black");
+        }
+      }
+    }
+
+    .muted {
+      color: map.get($map, "muted");
+    }
+
+    .button-wrapper {
+      button {
+        border-color: map.get($map, "dark");
+
+        &.front {
+          border-color: map.get($map, "dark") !important;
+          background-color: map.get($map, "light");
+        }
+
+        &.back {
+          border-color: map.get($map, "dark");
+          background-color: map.get($map, "dark");
+
+          * {
+            color: map.get($map, "dark") !important;
+          }
+        }
+      }
+
+      &:hover {
+        button {
+          &.front {
+            @if $name == "default" {
+              border-color: map.get($map, "light") !important;
+            } @else {
+              border-color: map.get($map, "light") !important;
+            }
+            background-color: map.get($map, "dark");
+
+            * {
+              color: map.get($map, "light") !important;
+            }
+          }
+
+          &.back {
+            @if $name == "default" {
+              border-color: map.get($map, "black");
+            } @else {
+              border-color: map.get($map, "light");
+            }
+            @if $name == "default" {
+              background-color: map.get($map, "black");
+            } @else {
+              background-color: map.get($map, "light");
+            }
+
+            * {
+              @if $name == "default" {
+                color: map.get($map, "light") !important;
+              } @else {
+                color: map.get($map, "light") !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@each $name, $map in $themes {
+  @include theme($name, $map);
+
+  .theme {
+    &.#{$name} {
+      .half {
+        background-color: map.get($map, "black");
+
+        &.second {
+          background-color: map.get($map, "white");
+        }
+      }
+    }
+  }
+}
+
+body {
+  margin: 0;
+  font-family: $koho;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  * {
+    transition: $trans;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@each $h, $s in $headers {
+  #{$h} {
+    font-size: $s;
+    font-weight: 400;
+    text-align: right;
+    margin: 0;
+
+    @media (max-width: calc($bp + 100px)) {
+      font-size: #{$s * 0.7};
+    }
+    @media (max-width: $bp) {
+      font-size: #{$s * 0.5};
+    }
+  }
+}
+
+@each $w in $weights {
+  .fw-#{$w} {
+    font-weight: $w;
+  }
+}
+
+.app {
+  position: relative;
+  width: 100%;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: $g-sm;
+  min-height: 100vh;
+  width: calc(50vw - #{$g-sm});
+  position: absolute;
+  right: 0;
+  z-index: -100;
+  overflow-y: auto;
+
+  @media (max-width: $bp) {
+    width: calc(75vw - #{$g-sm});
+  }
+
+  h1 {
+    margin: $g-xlg 0 0;
+  }
+
+  h2 {
+    margin: 0 0 0;
+  }
+
+  h4 {
+    margin: 0;
+    &.contact {
+      margin: 0 0 $g-xlg;
+      justify-self: flex-end;
+    }
+  }
+
+  p {
+    margin: auto 0 $g-xsm;
+    justify-self: flex-end;
+  }
+
+  .rev {
+    transform: rotateY(180deg);
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+  }
+
+  .button-wrapper {
+    position: relative;
+    button {
+      border-radius: $border-radius;
+      outline: none;
+      border: solid $border-width;
+      margin: $g-sm $g-xsm $g-sm 0;
+      font-family: "KoHo", sans-serif;
+      cursor: pointer;
+      background-color: white;
+      z-index: 1000;
+      transition: $trans;
+
+      &.back {
+        position: absolute;
+        left: $g-xsm;
+        top: $g-xsm;
+        z-index: -100;
+      }
+
+      a,
+      .fake-anchor {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: $g-xsm $g-sm;
+
+        @media (max-width: $bp) {
+        }
+
+        &:hover {
+          color: black;
+        }
+
+        img {
+          max-height: $sm;
+          margin: 0 $g-sm 0 0;
+        }
+
+        h2,
+        h3 {
+          font-weight: 700;
+          margin: 0 0 0.1rem;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: $g-sm 0 $g-md;
+
+    h2 {
+      margin: 0 0 $g-xsm;
+      font-weight: 700;
+    }
+
+    input {
+      font-family: $koho;
+      font-size: $sm;
+      border: $border-width solid black;
+      border-radius: $border-radius;
+      padding: $g-sm $g-md;
+      min-width: 200px;
+    }
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 10% 0%;
+  }
+  50% {
+    background-position: 91% 100%;
+  }
+  100% {
+    background-position: 10% 0%;
+  }
+}
+
+.banner {
+  position: absolute;
+  transform-origin: 0% 0%;
+  left: $sm;
+  top: 0%;
+  transform: rotate(90deg);
+  width: 100vh;
+  height: $sm;
+  content: "";
+  background-image: linear-gradient(
+    to right,
+    map.get($gelato, "black"),
+    map.get($earth, "light"),
+    map.get($reds, "muted"),
+    map.get($grey, "light"),
+    map.get($browns, "light"),
+    map.get($pop, "muted"),
+    map.get($bumble, "light"),
+    map.get($poland, "black"),
+    map.get($grenouie, "dark"),
+  );
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+
+  h3 {
+    margin: 0;
+  }
+
+  @media (max-width: $bp) {
+    display: none;
+  }
+}
+
+.info {
+  width: calc(50vw - #{$sm} - #{$g-sm});
+  content: " ";
+  height: 100vh;
+  position: fixed;
+  left: $sm;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: $g-sm;
+
+  @media (max-width: $bp) {
+    width: calc(25vw - #{$g-sm});
+    left: 0;
+  }
+
+  .warning {
+    width: calc(30% - #{$g-sm * 2});
+    padding: $g-sm;
+    border: 1px solid white;
+    position: relative;
+    top: 72%;
+    right: calc(-50% - #{$g-xlg + $g-sm * 2});
+    white-space: wrap;
+    opacity: 0.6;
+
+    @media (max-width: $bp) {
+      top: 65%;
+      font-size: $xsm * 0.7;
+      width: calc(100% - #{$g-sm * 2} - #{$sm});
+      left: 0;
+    }
+
+    @keyframes warning {
+      0% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      10% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      20% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+    }
+
+    animation: warning 4s ease-in-out 1s infinite;
+  }
+}
+
+.themes {
+  position: fixed;
+  z-index: 1000;
+  bottom: $g-xlg;
+  left: calc(50% - #{math.div($sm, 2)} - 3px);
+  @media (max-width: $bp) {
+    left: calc(25% - #{math.div($sm, 2)} - 3px);
+  }
+
+  .theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1000px;
+    width: $sm;
+    height: $sm;
+    overflow: hidden;
+    transform: rotate(45deg);
+    border: 3px solid;
+    margin: 0 0 $g-xsm;
+    cursor: pointer;
+
+    &:hover {
+      transform: rotate(-45deg) scale(1.05);
+    }
+
+    &.is--active {
+      transform: rotate(135deg) scale(1.05);
+
+      &:hover {
+        transform: rotate(135deg) scale(1.05);
+      }
+    }
+
+    .half {
+      width: 50%;
+      height: 100%;
+      content: " ";
+    }
+  }
+}
